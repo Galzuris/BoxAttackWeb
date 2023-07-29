@@ -21,10 +21,14 @@ export const JUMP_SPEED = 140 // 2 blocks
 export const PUSH_DELTA = 0.2
 export const BOX_DROP_SPEED = 32
 export const DEBUG = false
+export const BOX_SCORE = 10
+export const ROW_SCORE = 200
 
 class Game {
     init() {
         this.score = 0
+        this.craneSpeed = gridSize * 4
+
         this.mode = MODE_P1
         this.gsm = new StateMachine()
         this.scene = new Scene()

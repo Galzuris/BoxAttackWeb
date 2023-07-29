@@ -14,8 +14,12 @@ export class GameStartState {
         game.score = 0
 
         const crane = new Crane()
-        crane.pos.x = graphics.canvas.width / 2
+        crane.init()
         game.scene.add(crane)
+
+        const crane2 = new Crane()
+        crane2.init()
+        game.scene.add(crane2)
 
         switch (game.mode) {
             case MODE_P2:
