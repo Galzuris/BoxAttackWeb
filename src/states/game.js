@@ -13,10 +13,6 @@ export class GameState {
         graphics.clear()
         game.grid.draw()
         game.scene.draw()
-
-        const cp = graphics.canvas.width / 2 + this.#box
-        graphics.drawCrane(cp, Math.floor(this.#timer) % 2 == 0)
-        graphics.drawBlock(0, cp - gridSize / 2 - 1, + gridSize, 1)
         
         graphics.drawNums(game.score, graphics.canvas.width / 2, 4, true)
     }
