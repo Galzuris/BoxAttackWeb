@@ -1,4 +1,5 @@
 import { BOX_DROP_SPEED, BOX_MOVE_TIME, game, GRID, GRIDH } from "../game"
+import { GameOverState } from "../states/gameOver"
 import { collide } from "../utils/collision"
 import { graphics } from "../utils/graphics"
 import { lerp, clamp01 } from "../utils/math"
@@ -89,5 +90,11 @@ export class Box {
         const p = game.grid.toGrid(this.pos.x + GRIDH, this.pos.y + GRIDH)
         game.grid.set(p.x, p.y, this.id)
         game.scene.remove(this)
+
+        if (p.y == 1) // materialize to bad location => gameover
+        {
+            //console.log("gameover")
+            game.gsm.change(new GameOverState())
+        }
     }
 }

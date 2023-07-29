@@ -2,11 +2,12 @@ import { GRID } from "../game";
 
 const background = "#CCDCA2"
 const canvasId = "game"
-const blocksSprite = "./dist/images/blocks.png"
-const numsSprite = "./dist/images/nums.png"
-const titleSprite = "./dist/images/title.png"
-const playersSprite = "./dist/images/players.png"
-const craneSprite = "./dist/images/crane.png"
+const blocksSprite = "dist/images/blocks.png"
+const numsSprite = "dist/images/nums.png"
+const titleSprite = "dist/images/title.png"
+const playersSprite = "dist/images/players.png"
+const craneSprite = "dist/images/crane.png"
+const fxSprite = "dist/images/fx.png"
 
 export const numSize = { w: 4, h: 8 }
 export const playerSize = { w: 12, h: 16 }
@@ -16,6 +17,7 @@ class Graphics {
     #nums
     #players
     #crane
+    #fx
 
     init() {
         this.canvas = document.getElementById(canvasId)
@@ -26,6 +28,7 @@ class Graphics {
         this.#nums = this.loadImage(numsSprite)
         this.#players = this.loadImage(playersSprite)
         this.#crane = this.loadImage(craneSprite)
+        this.#fx = this.loadImage(fxSprite)
         this.title = this.loadImage(titleSprite)
     }
 
@@ -38,6 +41,10 @@ class Graphics {
     clear() {
         this.setColor(background)
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    }
+
+    setBackgroundColor() {
+        this.setColor(background)
     }
 
     setColor(h) {
@@ -107,6 +114,16 @@ class Graphics {
             this.#players,
             ox, oy, playerSize.w, playerSize.h,
             x, y, playerSize.w, playerSize.h,
+        )
+    }
+
+    drawFxExclamation(x, y) {
+        x = Math.floor(x)
+        y = Math.floor(y)
+        this.context.drawImage(
+            this.#fx,
+            0, 0, this.#fx.width, this.#fx.height / 2,
+            x, y, this.#fx.width, this.#fx.height / 2,
         )
     }
 }

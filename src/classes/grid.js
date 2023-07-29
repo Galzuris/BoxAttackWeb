@@ -1,9 +1,10 @@
 import { graphics } from "../utils/graphics"
-import { ROW_SCORE, game, GRID } from "../game"
+import { ROW_SCORE, game, GRID, GRIDH } from "../game"
 import { Box } from "./box"
 
 export class Grid {
     #fillTimer = 0
+    #fxTimer = 0
 
     init() {
         this.cols = Math.ceil(graphics.canvas.width / GRID)
@@ -47,7 +48,7 @@ export class Grid {
             if (this.data[c.x - 1][c.y] != 0) return false
         } else {
             if (c.x == this.cols - 1) return false
-            if (this.data[c.x + 1][c.y] != 0) return false            
+            if (this.data[c.x + 1][c.y] != 0) return false
         }
 
         return true
@@ -75,6 +76,11 @@ export class Grid {
     }
 
     update(delta) {
+        this.#fxTimer += delta
+        if (this.#fxTimer > 1) {
+            this.#fxTimer -= 1
+        }
+
         const yy = this.rows - 1
         let fill = true
         for (let x = 0; x < this.cols; x++) {
@@ -132,16 +138,21 @@ export class Grid {
 
     draw() {
         this.#drawBackground()
+        const ft = Math.floor(this.#fillTimer * 4) % 2 == 0
+        const fxt = Math.floor(this.#fxTimer * 4) % 2 == 0
+
         for (let x = 0; x < this.cols; x++) {
             for (let y = 0; y < this.rows; y++) {
-                if (y == this.rows - 1 && this.#fillTimer > 0) {
-                    const ft = Math.floor(this.#fillTimer * 4) % 2 == 0
+                if (y == this.rows - 1 && this.#fillTimer > 0) {                    
                     if (ft) continue
                 }
 
                 const id = this.data[x][y]
                 if (id > 0) {
                     graphics.drawBlock(id - 1, x * GRID, y * GRID, 1)
+                    if (y == 2 && fxt) {
+                        graphics.drawFxExclamation(x * GRID, y * GRID - GRIDH)
+                    }
                 }
             }
         }
