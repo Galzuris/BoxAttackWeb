@@ -9,7 +9,6 @@ export class Scene {
 
     add(object) {
         this.objects.push(object)
-        object.enterScene(this)
     }
 
     remove(object) {
@@ -17,7 +16,6 @@ export class Scene {
         if (id >= 0) {
             this.objects.splice(id, 1)
         }
-        object.exitScene(this)
     }
 
     filter(type) {

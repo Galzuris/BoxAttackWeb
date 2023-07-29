@@ -31,8 +31,6 @@ export class Box {
     }
 
     init() { }
-    enterScene() { }
-    exitScene() { }
 
     draw() {
         const frame = Math.floor(this.#timer) % 2 == 0

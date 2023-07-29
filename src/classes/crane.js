@@ -10,10 +10,6 @@ export class Crane {
 
     init() { }
 
-    enterScene() { }
-
-    exitScene() { }
-
     draw() {
         graphics.drawCrane(this.pos.x, this.boxId == 0)
         if (this.boxId > 0) {

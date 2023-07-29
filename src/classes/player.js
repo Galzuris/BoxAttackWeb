@@ -24,8 +24,6 @@ export class Player {
     }
 
     init() { }
-    enterScene() { }
-    exitScene() { }
 
     draw() {
         const fr = Math.floor(this.#frame)
