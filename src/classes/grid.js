@@ -69,6 +69,13 @@ export class Grid {
         }
     }
 
+    isCollide(x, y) {
+        if (this.#isSafe(x, y)) {
+            return this.data[x][y] > 0
+        }
+        return false
+    }
+
     set(x, y, id) {
         if (this.#isSafe(x, y)) {
             this.data[x][y] = id
@@ -143,7 +150,7 @@ export class Grid {
 
         for (let x = 0; x < this.cols; x++) {
             for (let y = 0; y < this.rows; y++) {
-                if (y == this.rows - 1 && this.#fillTimer > 0) {                    
+                if (y == this.rows - 1 && this.#fillTimer > 0) {
                     if (ft) continue
                 }
 

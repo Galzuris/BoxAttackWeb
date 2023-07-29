@@ -1,5 +1,5 @@
 import { game } from "../game";
-import { graphics } from "../utils/graphics";
+import { graphics, numSize } from "../utils/graphics";
 import { lerp } from "../utils/math";
 
 const TIME = 4
@@ -20,7 +20,6 @@ export class GameEndState {
     }
 
     draw() {
-        graphics.drawNums(this.score, 4, 4)
         const k = this.#timer / TIME
         const maxRad = Math.max(graphics.canvas.height, graphics.canvas.width) * 2
         if (k <= 0.5) {
@@ -30,8 +29,20 @@ export class GameEndState {
         } else {
             const rad = lerp(0, maxRad, (k - 0.5) * 2)
             graphics.setBackgroundColor()
-            graphics.drawEllipse(this.#pos.x, this.#pos.y, rad - 4)
-        }        
+            graphics.drawEllipse(
+                graphics.canvas.width / 2, 
+                graphics.canvas.height / 2, 
+                rad - 4
+            )
+            if (k > 0.7) {
+                graphics.drawNums(
+                    this.score,
+                    graphics.canvas.width / 2,
+                    (graphics.canvas.height - numSize.h) / 2,
+                    true
+                )
+            }
+        }
     }
 
     update(d) {

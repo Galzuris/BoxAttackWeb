@@ -24,7 +24,6 @@ export const DEBUG = false
 export const BOX_SCORE = 10
 export const BOX_MOVE_TIME = 0.4
 export const ROW_SCORE = 200
-
 export const GRID = 16
 export const GRIDH = 8
 export const GRID2 = 32
@@ -41,6 +40,7 @@ class Game {
         this.grid.init()
 
         this.gsm.change(new InitState())
+        this.timeScale = 1.2
         this.dateTime = Date.now()
         this.prevDateTime = this.dateTime
         this.deltaTime = 0
@@ -58,7 +58,7 @@ class Game {
 
     update() {
         this.dateTime = Date.now()
-        this.deltaTime = (this.dateTime - this.prevDateTime) / 1000.0
+        this.deltaTime = ((this.dateTime - this.prevDateTime) / 1000.0) * this.timeScale
 
         const state = this.gsm.current()
         if (state) {

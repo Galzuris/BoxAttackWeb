@@ -60,7 +60,7 @@ export class Box {
             return this.pos.x - c.left >= GRID
         } else {
             return c.right - GRID - this.pos.x >= GRID
-        }        
+        }
     }
 
     #processMoveTo(delta) {
@@ -93,8 +93,11 @@ export class Box {
 
         if (p.y == 1) // materialize to bad location => gameover
         {
-            //console.log("gameover")
-            game.gsm.change(new GameEndState(p.x + GRIDH, p.y + GRIDH))
+            if (game.grid.isCollide(p.x, p.y + 1)) {
+                game.gsm.change(
+                    new GameEndState(this.pos.x + GRIDH, this.pos.y + GRIDH)
+                )
+            }
         }
     }
 }
