@@ -33,10 +33,12 @@ export class Box {
     init() { }
 
     draw() {
-        const frame = Math.floor(this.#timer) % 2 == 0
-        if (frame) {
-            graphics.drawBlock(this.id - 1, this.pos.x, this.pos.y, 1)
-        }
+        graphics.drawBlock(this.id - 1, this.pos.x, this.pos.y, 1)
+        // flickering
+        // const frame = Math.floor(this.#timer) % 2 == 0
+        // if (frame) {
+        //     graphics.drawBlock(this.id - 1, this.pos.x, this.pos.y, 1)
+        // }
     }
 
     update(delta) {

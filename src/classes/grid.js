@@ -1,8 +1,10 @@
 import { graphics } from "../utils/graphics"
-import { game, gridSize } from "../game"
+import { ROW_SCORE, game, gridSize } from "../game"
 import { Box } from "./box"
 
 export class Grid {
+    #fillTimer = 0
+
     init() {
         this.cols = Math.ceil(graphics.canvas.width / gridSize)
         this.rows = Math.ceil(graphics.canvas.height / gridSize)
@@ -70,7 +72,29 @@ export class Grid {
         }
     }
 
-    update() {
+    update(delta) {
+        const yy = this.rows - 1
+        let fill = true
+        for (let x = 0; x < this.cols; x++) {
+            if (this.data[x][yy] == 0) {
+                fill = false
+                break
+            }
+        }
+
+        if (fill) {
+            this.#fillTimer += delta
+            if (this.#fillTimer > 1) {
+                this.#fillTimer = 0
+                for (let x = 0; x < this.cols; x++) {
+                    this.data[x][yy] = 0
+                    game.score += ROW_SCORE
+                }
+            }
+        } else {
+            this.#fillTimer = 0
+        }
+
         for (let x = 0; x < this.cols; x++) {
             for (let y = this.rows - 2; y >= 0; y--) {
                 const id = this.data[x][y]
@@ -108,6 +132,11 @@ export class Grid {
         this.#drawBackground()
         for (let x = 0; x < this.cols; x++) {
             for (let y = 0; y < this.rows; y++) {
+                if (y == this.rows - 1 && this.#fillTimer > 0) {
+                    const ft = Math.floor(this.#fillTimer * 4) % 2 == 0
+                    if (ft) continue
+                }
+
                 const id = this.data[x][y]
                 if (id > 0) {
                     graphics.drawBlock(id - 1, x * gridSize, y * gridSize, 1)

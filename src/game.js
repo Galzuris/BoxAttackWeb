@@ -17,7 +17,7 @@ export const P_MAX_SPEED = 16 * 3 // player max speed - px per second
 export const P_IDLE_FRAMES = [0, 1]
 export const P_WALK_FRAMES = [2, 3]
 export const GRAVITY = 256
-export const JUMP_SPEED = 140 // 2 blocks
+export const JUMP_SPEED = 120 // 1.5 block
 export const PUSH_DELTA = 0.2
 export const BOX_DROP_SPEED = 32
 export const DEBUG = false
@@ -61,6 +61,7 @@ class Game {
         }
 
         this.prevDateTime = this.dateTime
+        this.craneSpeed = gridSize * 4 + this.score/1000
     }
 }
 

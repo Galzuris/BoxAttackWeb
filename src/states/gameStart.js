@@ -13,13 +13,11 @@ export class GameStartState {
         game.scene.clear()
         game.score = 0
 
-        const crane = new Crane()
-        crane.init()
-        game.scene.add(crane)
-
-        const crane2 = new Crane()
-        crane2.init()
-        game.scene.add(crane2)
+        for (let i = 0; i < 2 + game.mode; i++) {
+            const crane = new Crane()
+            crane.init()
+            game.scene.add(crane)
+        }
 
         switch (game.mode) {
             case MODE_P2:
