@@ -17,11 +17,12 @@ export const P_MAX_SPEED = 16 * 3 // player max speed - px per second
 export const P_IDLE_FRAMES = [0, 1]
 export const P_WALK_FRAMES = [2, 3]
 export const GRAVITY = 256
-export const JUMP_SPEED = 120 // 1.5 block
+export const JUMP_SPEED = 120
 export const PUSH_DELTA = 0.2
 export const BOX_DROP_SPEED = 32
 export const DEBUG = false
 export const BOX_SCORE = 10
+export const BOX_MOVE_TIME = 0.4
 export const ROW_SCORE = 200
 
 export const GRID = 16

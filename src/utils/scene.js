@@ -18,7 +18,7 @@ export class Scene {
         }
     }
 
-    filter(type) {
+    findByType(type) {
         return this.objects.filter(ob => ob instanceof type)
     }
 

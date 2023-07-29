@@ -43,9 +43,11 @@ export class Grid {
         }
 
         if (mx < 0) { // push left            
-            if (x == 0) return false
+            if (c.x == 0) return false
+            if (this.data[c.x - 1][c.y] != 0) return false
         } else {
-            if (x == this.cols - 1) return false
+            if (c.x == this.cols - 1) return false
+            if (this.data[c.x + 1][c.y] != 0) return false            
         }
 
         return true
@@ -60,7 +62,7 @@ export class Grid {
                 x: c.x * GRID,
                 y: c.y * GRID
             }
-            b.moveTo((c.x + mx) * GRID, c.y * GRID, 0.5)
+            b.moveTo((c.x + mx) * GRID, c.y * GRID)
             game.scene.add(b)
             this.data[c.x][c.y] = 0
         }

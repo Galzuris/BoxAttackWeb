@@ -2,7 +2,8 @@ import { DEBUG, GRAVITY, JUMP_SPEED, P1_CONTROLS, PUSH_DELTA, P_IDLE_FRAMES, P_M
 import { graphics, playerSize } from "../utils/graphics"
 import { keys } from "../utils/keys"
 import { game } from "../game"
-import { collide, mergeCollisions } from "../utils/collision"
+import { collide } from "../utils/collision"
+import { BOX_MOVE_DROP, Box } from "./box"
 
 export class Player {
     #index
@@ -86,16 +87,14 @@ export class Player {
                 this.pos.x = collider.right - pw
                 s.x = 0
                 const px = this.pos.x + GRID
-                const py = this.pos.y - GRIDH
-                this.#pushGrid(px, py, 1, d)
+                this.#push(px, 1, d)
             }
         } else {
             if (this.pos.x + s.x * d - pw < collider.left) {
                 this.pos.x = collider.left + pw
                 s.x = 0
                 const px = this.pos.x - GRID
-                const py = this.pos.y - GRIDH
-                this.#pushGrid(px, py, -1, d)
+                this.#push(px, -1, d)
             }
         }
 
@@ -116,6 +115,11 @@ export class Player {
         this.#speed = s
     }
 
+    #push(x, dir, d) {
+        this.#pushGrid(x, this.pos.y - GRIDH, dir, d)
+        this.#pushBox(x, this.pos.y - 4, dir, d)
+    }
+
     #pushGrid(x, y, dir, d) {
         if (game.grid.canPush(x, y, dir)) {
             this.#pushTimer += d
@@ -128,6 +132,19 @@ export class Player {
         }
     }
 
-    #pushBox(x, y, dir, d) {        
+    #pushBox(x, y, dir, d) {
+        const boxes = game.scene
+            .findByType(Box)
+            .filter(b =>
+                b.mode == BOX_MOVE_DROP
+                && x >= b.pos.x && x <= b.pos.x + GRID
+                && y >= b.pos.y && y <= b.pos.y + GRID
+                && b.canPush(dir)
+            )
+        if (boxes.length == 0) return
+
+        boxes.forEach(b => {
+            b.moveTo(b.pos.x + dir * GRID, b.pos.y)
+        })
     }
 }

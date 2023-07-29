@@ -1,4 +1,4 @@
-import { BOX_DROP_SPEED, game, GRID, GRIDH } from "../game"
+import { BOX_DROP_SPEED, BOX_MOVE_TIME, game, GRID, GRIDH } from "../game"
 import { collide } from "../utils/collision"
 import { graphics } from "../utils/graphics"
 import { lerp, clamp01 } from "../utils/math"
@@ -15,7 +15,7 @@ export class Box {
         this.mode = BOX_MOVE_DROP
     }
 
-    moveTo(x, y, time) {
+    moveTo(x, y) {
         this.startPos = {
             x: this.pos.x,
             y: this.pos.y,
@@ -25,8 +25,8 @@ export class Box {
             x: x,
             y: y,
         }
-        this.timer = time
-        this.time = time
+        this.timer = BOX_MOVE_TIME
+        this.time = BOX_MOVE_TIME
     }
 
     init() { }
@@ -44,6 +44,22 @@ export class Box {
                 this.#processMoveDrop(delta)
                 break
         }
+    }
+
+    canPush(dir) {
+        const gpos = game.grid.toGrid(this.pos.x, this.pos.y)
+        if (Math.abs(gpos.y * GRID - this.pos.y) >= 2) return false
+
+        const c = collide(
+            this.pos.x + GRIDH + 4, this.pos.y + GRIDH + 4, GRID - 8, GRID - 8,
+            [this]
+        )
+
+        if (dir < 0) {
+            return this.pos.x - c.left >= GRID
+        } else {
+            return c.right - GRID - this.pos.x >= GRID
+        }        
     }
 
     #processMoveTo(delta) {
