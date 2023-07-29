@@ -1,5 +1,5 @@
 import { BOX_DROP_SPEED, BOX_MOVE_TIME, game, GRID, GRIDH } from "../game"
-import { GameOverState } from "../states/gameOver"
+import { GameEndState } from "../states/gameEnd"
 import { collide } from "../utils/collision"
 import { graphics } from "../utils/graphics"
 import { lerp, clamp01 } from "../utils/math"
@@ -94,7 +94,7 @@ export class Box {
         if (p.y == 1) // materialize to bad location => gameover
         {
             //console.log("gameover")
-            game.gsm.change(new GameOverState())
+            game.gsm.change(new GameEndState(p.x + GRIDH, p.y + GRIDH))
         }
     }
 }

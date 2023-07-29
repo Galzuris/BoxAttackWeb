@@ -59,6 +59,16 @@ class Graphics {
         this.context.stroke()
     }
 
+    drawEllipse(x, y, rad) {
+        x = Math.floor(x)
+        y = Math.floor(y)
+        rad = Math.floor(Math.max(rad, 0))
+
+        this.context.beginPath()
+        this.context.ellipse(x, y, rad, rad, 0, 0, Math.PI * 2)
+        this.context.fill()
+    }
+
     drawCrane(x, open) {
         const cw = this.#crane.width / 2
         const frame = (open == true ? 1 : 0) * cw
