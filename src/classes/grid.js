@@ -1,13 +1,13 @@
 import { graphics } from "../utils/graphics"
-import { ROW_SCORE, game, gridSize } from "../game"
+import { ROW_SCORE, game, GRID } from "../game"
 import { Box } from "./box"
 
 export class Grid {
     #fillTimer = 0
 
     init() {
-        this.cols = Math.ceil(graphics.canvas.width / gridSize)
-        this.rows = Math.ceil(graphics.canvas.height / gridSize)
+        this.cols = Math.ceil(graphics.canvas.width / GRID)
+        this.rows = Math.ceil(graphics.canvas.height / GRID)
         this.data = []
         this.clear()
     }
@@ -57,10 +57,10 @@ export class Grid {
             const b = new Box()
             b.id = this.data[c.x][c.y]
             b.pos = {
-                x: c.x * gridSize,
-                y: c.y * gridSize
+                x: c.x * GRID,
+                y: c.y * GRID
             }
-            b.moveTo((c.x + mx) * gridSize, c.y * gridSize, 0.5)
+            b.moveTo((c.x + mx) * GRID, c.y * GRID, 0.5)
             game.scene.add(b)
             this.data[c.x][c.y] = 0
         }
@@ -103,8 +103,8 @@ export class Grid {
                     const b = new Box()
                     b.id = this.data[x][y]
                     b.pos = {
-                        x: x * gridSize,
-                        y: y * gridSize,
+                        x: x * GRID,
+                        y: y * GRID,
                     }
                     b.drop()
                     game.scene.add(b)
@@ -139,7 +139,7 @@ export class Grid {
 
                 const id = this.data[x][y]
                 if (id > 0) {
-                    graphics.drawBlock(id - 1, x * gridSize, y * gridSize, 1)
+                    graphics.drawBlock(id - 1, x * GRID, y * GRID, 1)
                 }
             }
         }
@@ -162,7 +162,7 @@ export class Grid {
                 if (x == 3 && y == 4) id = 2
                 if (x == 9 && y == 3) id = 1
 
-                graphics.drawBlock(id, x * gridSize, y * gridSize, 0)
+                graphics.drawBlock(id, x * GRID, y * GRID, 0)
             }
         }
     }
@@ -181,7 +181,7 @@ export class Grid {
         if (this.#isSafe(x, y)) {
             for (let i = y; i < this.rows; i++) {
                 if (this.data[x][i] > 0) {
-                    return i * gridSize
+                    return i * GRID
                 }
             }
         }
@@ -192,7 +192,7 @@ export class Grid {
         if (this.#isSafe(x, y)) {
             for (let i = x; i > 0; i--) {
                 if (this.data[i][y] > 0) {
-                    return i * gridSize + gridSize
+                    return i * GRID + GRID
                 }
             }
         }
@@ -203,7 +203,7 @@ export class Grid {
         if (this.#isSafe(x, y)) {
             for (let i = x; i < this.cols; i++) {
                 if (this.data[i][y] > 0) {
-                    return i * gridSize
+                    return i * GRID
                 }
             }
         }
@@ -216,8 +216,8 @@ export class Grid {
 
     toGrid(x, y) {
         return {
-            x: Math.floor(x / gridSize + 0.01),
-            y: Math.floor(y / gridSize + 0.01),
+            x: Math.floor(x / GRID + 0.01),
+            y: Math.floor(y / GRID + 0.01),
         }
     }
 }

@@ -1,6 +1,6 @@
 import { Crane } from "../classes/crane"
 import { Player } from "../classes/player"
-import { MODE_P1, MODE_P2, P1ID, P1_CONTROLS, P2ID, P2_CONTROLS, game, gridSize } from "../game"
+import { MODE_P1, MODE_P2, P1ID, P1_CONTROLS, P2ID, P2_CONTROLS, game, GRID, GRIDH } from "../game"
 import { graphics } from "../utils/graphics"
 import { GameState } from "./game"
 
@@ -22,11 +22,11 @@ export class GameStartState {
         switch (game.mode) {
             case MODE_P2:
                 const p2 = new Player(P2ID, P2_CONTROLS)
-                p2.pos.x = Math.floor(graphics.canvas.width * 0.75 / gridSize) * gridSize + gridSize / 2
+                p2.pos.x = Math.floor(graphics.canvas.width * 0.75 / GRID) * GRID + GRIDH
                 game.scene.add(p2)
             case MODE_P1:
                 const p1 = new Player(P1ID, P1_CONTROLS)
-                p1.pos.x = Math.floor(graphics.canvas.width * 0.25 / gridSize) * gridSize + gridSize / 2
+                p1.pos.x = Math.floor(graphics.canvas.width * 0.25 / GRID) * GRID + GRIDH
                 game.scene.add(p1)            
                 break
         }        

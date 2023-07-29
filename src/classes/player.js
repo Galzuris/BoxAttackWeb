@@ -1,4 +1,4 @@
-import { DEBUG, GRAVITY, JUMP_SPEED, P1_CONTROLS, PUSH_DELTA, P_IDLE_FRAMES, P_MAX_SPEED, P_WALK_FRAMES, gridSize } from "../game"
+import { DEBUG, GRAVITY, JUMP_SPEED, P1_CONTROLS, PUSH_DELTA, P_IDLE_FRAMES, P_MAX_SPEED, P_WALK_FRAMES, GRID, GRIDH } from "../game"
 import { graphics, playerSize } from "../utils/graphics"
 import { keys } from "../utils/keys"
 import { game } from "../game"
@@ -85,29 +85,17 @@ export class Player {
             if (this.pos.x + s.x * d + pw > collider.right) {
                 this.pos.x = collider.right - pw
                 s.x = 0
-                if (game.grid.canPush(this.pos.x + gridSize, this.pos.y - gridSize / 2, 1)) {
-                    this.#pushTimer += d
-                    if (this.#pushTimer > PUSH_DELTA) {
-                        game.grid.push(this.pos.x + gridSize, this.pos.y - gridSize / 2, 1)
-                        this.#pushTimer = 0
-                    }
-                } else {
-                    this.#pushTimer = 0
-                }
+                const px = this.pos.x + GRID
+                const py = this.pos.y - GRIDH
+                this.#pushGrid(px, py, 1, d)
             }
         } else {
             if (this.pos.x + s.x * d - pw < collider.left) {
                 this.pos.x = collider.left + pw
                 s.x = 0
-                if (game.grid.canPush(this.pos.x - gridSize, this.pos.y - gridSize / 2, -1)) {
-                    this.#pushTimer += d
-                    if (this.#pushTimer > PUSH_DELTA) {
-                        game.grid.push(this.pos.x - gridSize, this.pos.y - gridSize / 2, -1)
-                        this.#pushTimer = 0
-                    }
-                } else {
-                    this.#pushTimer = 0
-                }
+                const px = this.pos.x - GRID
+                const py = this.pos.y - GRIDH
+                this.#pushGrid(px, py, -1, d)
             }
         }
 
@@ -126,5 +114,20 @@ export class Player {
         this.pos.x += s.x * d
         this.pos.y += s.y * d
         this.#speed = s
+    }
+
+    #pushGrid(x, y, dir, d) {
+        if (game.grid.canPush(x, y, dir)) {
+            this.#pushTimer += d
+            if (this.#pushTimer > PUSH_DELTA) {
+                game.grid.push(x, y, dir)
+                this.#pushTimer = 0
+            }
+        } else {
+            this.#pushTimer = 0
+        }
+    }
+
+    #pushBox(x, y, dir, d) {        
     }
 }

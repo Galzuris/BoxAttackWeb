@@ -24,10 +24,14 @@ export const DEBUG = false
 export const BOX_SCORE = 10
 export const ROW_SCORE = 200
 
+export const GRID = 16
+export const GRIDH = 8
+export const GRID2 = 32
+
 class Game {
     init() {
         this.score = 0
-        this.craneSpeed = gridSize * 4
+        this.craneSpeed = GRID * 4
 
         this.mode = MODE_P1
         this.gsm = new StateMachine()
@@ -61,9 +65,8 @@ class Game {
         }
 
         this.prevDateTime = this.dateTime
-        this.craneSpeed = gridSize * 4 + this.score/1000
+        this.craneSpeed = GRID * 4 + this.score/1000
     }
 }
 
 export const game = new Game()
-export const gridSize = 16

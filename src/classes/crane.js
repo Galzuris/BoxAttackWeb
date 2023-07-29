@@ -1,4 +1,4 @@
-import { BOX_SCORE, game, gridSize } from "../game"
+import { BOX_SCORE, game, GRID, GRID2, GRIDH } from "../game"
 import { graphics } from "../utils/graphics"
 import { clamp01, lerp } from "../utils/math"
 import { Box } from "./box"
@@ -19,9 +19,9 @@ export class Crane {
 
     init() {
         if (Math.random() > 0.5) {
-            this.#target = -gridSize * 2
+            this.#target = -GRID2
         } else {
-            this.#target = graphics.canvas.width + gridSize * 2
+            this.#target = graphics.canvas.width + GRID2
         }
         this.#start = this.#target
         this.pos.x = this.#start
@@ -31,7 +31,7 @@ export class Crane {
         const px = Math.floor(this.pos.x)
         graphics.drawCrane(px, this.boxId == 0)
         if (this.boxId > 0) {
-            graphics.drawBlock(this.boxId - 1, px - gridSize / 2, this.pos.y + gridSize, 1)
+            graphics.drawBlock(this.boxId - 1, px - GRIDH, this.pos.y + GRID, 1)
         }
     }
 
@@ -54,9 +54,9 @@ export class Crane {
             switch (this.#state) {
                 case S_WAIT:
                     this.#state = S_TAKE
-                    let tp = -gridSize * 2
+                    let tp = -GRID2
                     if (Math.random() > 0.5) {
-                        tp = graphics.canvas.width + gridSize * 2
+                        tp = graphics.canvas.width + GRID2
                     }
                     this.#setTarget(tp)
                     break
@@ -64,7 +64,7 @@ export class Crane {
                     this.#state = S_PLACE
                     this.boxId = Math.floor(1 + Math.random() * 3)
                     const targetColumn = Math.floor(1 + Math.random() * (game.grid.cols - 2))
-                    this.#setTarget(targetColumn * gridSize + gridSize / 2)
+                    this.#setTarget(targetColumn * GRID + GRIDH)
                     break
                 case S_PLACE:
                     this.#state = S_WAIT                   
@@ -72,13 +72,13 @@ export class Crane {
                     const b = new Box()
                     b.id = this.boxId
                     b.pos = {
-                        x: this.pos.x - gridSize / 2,
-                        y: gridSize + 1,
+                        x: this.pos.x - GRIDH,
+                        y: GRID + 1,
                     }
                     b.drop()
                     game.scene.add(b)
                     game.score += BOX_SCORE
-                    
+
                     this.boxId = 0
                     this.#setTarget(this.pos.x)
                     this.#time = T_WAIT

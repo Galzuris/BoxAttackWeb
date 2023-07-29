@@ -1,4 +1,4 @@
-import { gridSize } from "../game";
+import { GRID } from "../game";
 
 const background = "#CCDCA2"
 const canvasId = "game"
@@ -68,8 +68,8 @@ class Graphics {
         y = Math.ceil(y)
         this.context.drawImage(
             this.#blocks,
-            id * gridSize, offset * gridSize, gridSize, gridSize,
-            x, y, gridSize, gridSize
+            id * GRID, offset * GRID, GRID, GRID,
+            x, y, GRID, GRID
         )
     }
 

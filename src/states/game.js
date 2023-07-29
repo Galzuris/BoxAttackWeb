@@ -1,5 +1,5 @@
 import { graphics } from "../utils/graphics"
-import { game, gridSize } from "../game"
+import { game, GRID } from "../game"
 
 export class GameState {
     #box = 0

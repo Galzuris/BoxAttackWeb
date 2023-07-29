@@ -1,5 +1,5 @@
 import { Box } from "../classes/box"
-import { gridSize } from "../game"
+import { GRID } from "../game"
 import { graphics } from "./graphics"
 
 export class Scene {
@@ -46,7 +46,7 @@ export class Scene {
             const c = this.#findCollision(xx, y, ig)
             if (c === null) continue
             if (c instanceof Box) {
-                return c.pos.x + gridSize
+                return c.pos.x + GRID
             }
         }
         return 0
@@ -69,7 +69,7 @@ export class Scene {
             }
 
             if (obj instanceof Box) {
-                if (x > obj.pos.x && x < obj.pos.x + gridSize && y >= obj.pos.y && y <= obj.pos.y + gridSize) {
+                if (x > obj.pos.x && x < obj.pos.x + GRID && y >= obj.pos.y && y <= obj.pos.y + GRID) {
                     return obj
                 }
             }

@@ -1,8 +1,8 @@
-import { game, gridSize } from "../game"
+import { game, GRID, GRID2 } from "../game"
 import { keys } from "../utils/keys"
 import { KEY_A, KEY_D, KEY_LEFT, KEY_RIGHT, KEY_SPACE, KEY_ENTER } from "../utils/keys"
 import { MODE_P1, MODE_P2 } from "../game"
-import { graphics, numSize } from "../utils/graphics"
+import { graphics } from "../utils/graphics"
 import { GameStartState } from "./gameStart"
 
 export class InitState {
@@ -31,7 +31,7 @@ export class InitState {
                 const id = ((mx && (!my)) || ((!mx) && my)) ? 0 : 2
                 const of = (id == 0 && (x == 0 || x == game.grid.cols - 1)) ? 1 : 0
 
-                graphics.drawBlock(id, x * gridSize, y * gridSize + Math.ceil(this.#offset - gridSize * 2), of)
+                graphics.drawBlock(id, x * GRID, y * GRID + Math.ceil(this.#offset - GRID2), of)
             }
         }
 
@@ -71,7 +71,7 @@ export class InitState {
     }
 
     update(delta) {
-        this.#offset += delta * gridSize
-        if (this.#offset > gridSize * 2) this.#offset -= gridSize * 2
+        this.#offset += delta * GRID
+        if (this.#offset > GRID2) this.#offset -= GRID2
     }
 }

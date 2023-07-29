@@ -1,4 +1,4 @@
-import { game, gridSize } from "../game"
+import { game, GRID } from "../game"
 
 export function mergeCollisions(c1, c2) {
     return {
