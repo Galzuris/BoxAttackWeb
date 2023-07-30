@@ -1,7 +1,9 @@
 import { Crane } from "../classes/crane"
+import { gameMusic } from "../classes/music"
 import { Player } from "../classes/player"
 import { MODE_P1, MODE_P2, P1ID, P1_CONTROLS, P2ID, P2_CONTROLS, game, GRID, GRIDH } from "../game"
 import { graphics } from "../utils/graphics"
+import { sounds } from "../utils/sounds"
 import { GameState } from "./game"
 
 export class GameStartState {
@@ -12,6 +14,11 @@ export class GameStartState {
         game.grid.generate()
         game.scene.clear()
         game.score = 0
+
+        sounds.enable()
+        if (game.music != null) game.music.stop()
+        game.music = gameMusic
+        game.music.play()
 
         for (let i = 0; i < 2 + game.mode; i++) {
             const crane = new Crane()

@@ -1,5 +1,7 @@
 import { graphics } from "../utils/graphics"
 import { game, GRID } from "../game"
+import { KEY_ESC, keys } from "../utils/keys"
+import { GameEndState } from "./gameEnd"
 
 export class GameState {
     #box = 0
@@ -22,6 +24,10 @@ export class GameState {
         this.#box = Math.sin(this.#timer) * 64
         game.scene.update(delta)
         game.grid.update(delta)
+
+        if (keys.isPressed(KEY_ESC)) {
+            game.gsm.change(new GameEndState(0, 0))
+        }
     }
 
     exit() { }

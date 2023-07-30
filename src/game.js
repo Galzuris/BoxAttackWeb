@@ -32,6 +32,7 @@ class Game {
     init() {
         this.score = 0
         this.craneSpeed = GRID * 4
+        this.music = null
 
         this.mode = MODE_P1
         this.gsm = new StateMachine()

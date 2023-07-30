@@ -3,6 +3,7 @@ import { GameEndState } from "../states/gameEnd"
 import { collide } from "../utils/collision"
 import { graphics } from "../utils/graphics"
 import { lerp, clamp01 } from "../utils/math"
+import { sounds } from "../utils/sounds"
 
 export const BOX_MOVE_TO = 1
 export const BOX_MOVE_DROP = 2
@@ -70,8 +71,8 @@ export class Box {
         this.pos.y = lerp(this.startPos.y, this.target.y, k)
         if (this.timer < 0) {
             this.timer = this.time
-            this.mode = -1
             this.materialize()
+            this.mode = -1
         }
     }
 
@@ -80,9 +81,9 @@ export class Box {
         const c = collide(this.pos.x + hg, this.pos.y + hg, hg, hg, [this])
         this.pos.y += delta * BOX_DROP_SPEED
         if (this.pos.y + GRID > c.down) {
-            this.pos.y = c.down - GRID
-            this.mode = -1
+            this.pos.y = c.down - GRID            
             this.materialize()
+            this.mode = -1
         }
     }
 
@@ -90,6 +91,10 @@ export class Box {
         const p = game.grid.toGrid(this.pos.x + GRIDH, this.pos.y + GRIDH)
         game.grid.set(p.x, p.y, this.id)
         game.scene.remove(this)
+
+        if (this.mode == BOX_MOVE_DROP) { //&& game.grid.isCollide(p.x, p.y + 1)
+            sounds.playHit()
+        }
 
         if (p.y == 1) // materialize to bad location => gameover
         {

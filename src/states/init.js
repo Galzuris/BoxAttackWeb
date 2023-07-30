@@ -4,15 +4,21 @@ import { KEY_A, KEY_D, KEY_LEFT, KEY_RIGHT, KEY_SPACE, KEY_ENTER } from "../util
 import { MODE_P1, MODE_P2 } from "../game"
 import { graphics } from "../utils/graphics"
 import { GameStartState } from "./gameStart"
+import { menuMusic } from "../classes/music"
 
 export class InitState {
     #offset = 0
 
     enter() {
         game.mode = MODE_P1
+        game.music = menuMusic
+
         console.log("init")
         keys.sub((c, s) => {
-            this.onkey(c, s)
+            this.onkey(c, s)            
+            if (game.music.isPlaying() == false) {
+                game.music.play()
+            }
         })
     }
 

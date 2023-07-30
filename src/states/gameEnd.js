@@ -1,3 +1,4 @@
+import { overMusic } from "../classes/music";
 import { game } from "../game";
 import { graphics, numSize } from "../utils/graphics";
 import { lerp } from "../utils/math";
@@ -17,6 +18,11 @@ export class GameEndState {
 
     enter() {
         this.score = game.score
+        game.music.stop()
+        game.music = overMusic
+        setTimeout(() => {
+            game.music.play()
+        }, 500)
     }
 
     draw() {
@@ -30,8 +36,8 @@ export class GameEndState {
             const rad = lerp(0, maxRad, (k - 0.5) * 2)
             graphics.setBackgroundColor()
             graphics.drawEllipse(
-                graphics.canvas.width / 2, 
-                graphics.canvas.height / 2, 
+                graphics.canvas.width / 2,
+                graphics.canvas.height / 2,
                 rad - 4
             )
             if (k > 0.7) {
