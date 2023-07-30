@@ -15,7 +15,7 @@ const Ab = 'ab'
 const notesPack = [F, G, Ab]
 
 class Sounds {
-    #musicVol = 0.1
+    #musicVol = 0.3
     #enabled = false
     #hit
     #hat
