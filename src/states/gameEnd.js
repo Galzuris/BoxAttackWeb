@@ -1,13 +1,16 @@
 import { overMusic } from "../classes/music";
-import { game } from "../game";
-import { graphics, numSize } from "../utils/graphics";
+import { GRID, GRID2, game } from "../game";
+import { graphics, fontSize, T_CENTER, T_LEFT } from "../utils/graphics";
+import { KEY_ENTER, KEY_SPACE, keys } from "../utils/keys";
 import { lerp } from "../utils/math";
+import { InitState } from "./init";
 
 const TIME = 4
 
 export class GameEndState {
     #timer = 0
     #pos
+    #offset = 0
 
     constructor(x, y) {
         this.#pos = {
@@ -41,18 +44,40 @@ export class GameEndState {
                 rad - 4
             )
             if (k > 0.7) {
-                graphics.drawNums(
-                    this.score,
-                    graphics.canvas.width / 2,
-                    (graphics.canvas.height - numSize.h) / 2,
-                    true
-                )
+                graphics.clear()
+                const ww = game.grid.cols
+                const hh = game.grid.rows + 2
+                for (let x = 0; x < ww; x++) {
+                    const mx = x % 2 == 0
+                    for (let y = 0; y < hh; y++) {
+                        const my = y % 2 == 0
+                        const id = ((mx && (!my)) || ((!mx) && my)) ? 0 : 2
+                        const of = (id == 0 && (x == 0 || x == game.grid.cols - 1)) ? 1 : 0
+                        graphics.drawBlock(id, x * GRID, y * GRID + Math.ceil(this.#offset - GRID2), of)
+                    }
+                }
+
+                const cx = graphics.canvas.width / 2
+                const fh = fontSize.h + 2
+                let y = graphics.canvas.height / 2 - fh * 2
+                graphics.drawText('SCORE', cx, y, T_CENTER)
+                y += fh
+                graphics.drawNums(this.score, cx, y, true)
+                y += fh * 2
+                graphics.drawText("press 'space' to exit", cx, y, T_CENTER)
             }
         }
     }
 
     update(d) {
         this.#timer += d
+
+        this.#offset += d * GRID
+        if (this.#offset > GRID2) this.#offset -= GRID2
+
+        if (keys.isPressed(KEY_SPACE) || keys.isPressed(KEY_ENTER)) {
+            game.gsm.change(new InitState())
+        }
     }
 
     exit() { }

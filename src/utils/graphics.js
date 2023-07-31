@@ -9,8 +9,8 @@ const playersSprite = "dist/images/players.png"
 const craneSprite = "dist/images/crane.png"
 const fxSprite = "dist/images/fx.png"
 const fontSprite = "dist/images/font.png"
-const fontSize = { w: 5, h: 6 }
 
+export const fontSize = { w: 5, h: 6 }
 export const numSize = { w: 4, h: 8 }
 export const playerSize = { w: 12, h: 16 }
 export const T_LEFT = 0

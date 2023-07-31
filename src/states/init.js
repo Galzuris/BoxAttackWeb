@@ -36,7 +36,6 @@ export class InitState {
                 const my = y % 2 == 0
                 const id = ((mx && (!my)) || ((!mx) && my)) ? 0 : 2
                 const of = (id == 0 && (x == 0 || x == game.grid.cols - 1)) ? 1 : 0
-
                 graphics.drawBlock(id, x * GRID, y * GRID + Math.ceil(this.#offset - GRID2), of)
             }
         }
