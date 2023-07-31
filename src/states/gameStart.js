@@ -19,6 +19,7 @@ export class GameStartState {
         if (game.music != null) game.music.stop()
         game.music = gameMusic
         game.music.play()
+        sounds.playSelect()
 
         for (let i = 0; i < 2 + game.mode; i++) {
             const crane = new Crane()

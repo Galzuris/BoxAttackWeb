@@ -4,6 +4,7 @@ import { keys } from "../utils/keys"
 import { game } from "../game"
 import { collide } from "../utils/collision"
 import { BOX_MOVE_DROP, Box } from "./box"
+import { sounds } from "../utils/sounds"
 
 export class Player {
     #index
@@ -107,6 +108,7 @@ export class Player {
 
         if (grounded && keys.isPressed(this.#controls.up)) {
             s.y = -JUMP_SPEED
+            sounds.playJump()
         }
 
         s.y += GRAVITY * d

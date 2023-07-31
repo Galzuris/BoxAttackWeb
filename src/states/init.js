@@ -5,6 +5,7 @@ import { MODE_P1, MODE_P2 } from "../game"
 import { graphics, T_LEFT, T_RIGHT } from "../utils/graphics"
 import { GameStartState } from "./gameStart"
 import { menuMusic } from "../classes/music"
+import { sounds } from "../utils/sounds"
 
 export class InitState {
     #offset = 0
@@ -15,10 +16,11 @@ export class InitState {
 
         console.log("init")
         keys.sub((c, s) => {
-            this.onkey(c, s)            
+            sounds.enable()
             if (game.music.isPlaying() == false) {
                 game.music.play()
             }
+            this.onkey(c, s)
         })
     }
 
@@ -52,7 +54,7 @@ export class InitState {
         const tx = Math.floor((graphics.canvas.width - graphics.title.width) / 2)
         const ty = Math.floor((graphics.canvas.height - graphics.title.height) / 2)
         graphics.context.drawImage(graphics.title, tx, ty)
-        
+
         const bottom = graphics.canvas.height - 16
         graphics.drawText("galzuris.com", 24, bottom, T_LEFT)
         graphics.drawText("igdc#184", graphics.canvas.width - 24, bottom, T_RIGHT)
@@ -67,10 +69,12 @@ export class InitState {
             case KEY_A:
             case KEY_LEFT:
                 game.mode = MODE_P1
+                sounds.playJump()
                 break
             case KEY_D:
             case KEY_RIGHT:
                 game.mode = MODE_P2
+                sounds.playJump()
                 break
             case KEY_SPACE:
             case KEY_ENTER:

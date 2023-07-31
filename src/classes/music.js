@@ -87,8 +87,8 @@ const B9 = [Ab, Ab, G, G, F, F, 0, 0]
 
 export const gameMusic = new Music()
 gameMusic.loop = true
-gameMusic.drums = [D1, D1, D1, D2]
-gameMusic.beeps = [B1, B1, B1, B2]
+gameMusic.drums = [D1, D1, D1, D2, D1, D1, D1, D0]
+gameMusic.beeps = [B1, B1, B1, B2, B1, B1, B1, B2, B9, B9, B2, B1, B9, B9, B1, B2]
 gameMusic.unpack()
 
 export const overMusic = new Music()

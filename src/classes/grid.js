@@ -1,6 +1,7 @@
 import { graphics } from "../utils/graphics"
 import { ROW_SCORE, game, GRID, GRIDH } from "../game"
 import { Box } from "./box"
+import { sounds } from "../utils/sounds"
 
 export class Grid {
     #fillTimer = 0
@@ -104,6 +105,7 @@ export class Grid {
                 for (let x = 0; x < this.cols; x++) {
                     this.data[x][yy] = 0
                     game.score += ROW_SCORE
+                    sounds.playStack()
                 }
             }
         } else {

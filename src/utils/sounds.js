@@ -2,6 +2,9 @@ const hitSource = 'dist/sounds/hit.wav'
 const kickSource = 'dist/sounds/m_kick.wav'
 const hatSource = 'dist/sounds/m_hat.wav'
 const snareSource = 'dist/sounds/m_snare.wav'
+const selectSource = 'dist/sounds/select.wav'
+const jumpSource = 'dist/sounds/jump.wav'
+const stackSource = 'dist/sounds/stack.wav'
 
 // drums
 const K = 'k'
@@ -13,6 +16,7 @@ const G = 'g'
 const Ab = 'ab'
 
 const notesPack = [F, G, Ab]
+const musicVol = 0.3
 
 class Sounds {
     #musicVol = 0.3
@@ -20,15 +24,21 @@ class Sounds {
     #hit
     #hat
     #kick
+    #select
+    #stack
+    #jump
     #snare
-
     #notes = []
 
     constructor() {
         this.#hit = new Audio(hitSource)
+        this.#select = new Audio(selectSource)
+        this.#jump = new Audio(jumpSource)
+        this.#stack = new Audio(stackSource)
+
         this.#kick = new Audio(kickSource)
         this.#hat = new Audio(hatSource)
-        this.#snare = new Audio(snareSource)
+        this.#snare = new Audio(snareSource)        
         this.#kick.volume = this.#musicVol
         this.#hat.volume = this.#musicVol
         this.#snare.volume = this.#musicVol
@@ -58,19 +68,47 @@ class Sounds {
         }
     }
 
-    playBeep(id) {  
+    playBeep(id) {
         if (id !== 0) {
             this.#notes[id].play()
-        }      
+        }
     }
 
     disable() {
         this.#enabled = false
     }
 
+    toggle() {
+        this.#enabled = !this.#enabled
+
+        const vol = this.#enabled ? musicVol : 0
+        this.#kick.volume = vol
+        this.#hat.volume = vol
+        this.#snare.volume = vol
+        // dont work
+        this.#notes.forEach((v, id) => {
+            this.#notes[id].volume = vol
+        })
+    }
+
     playHit() {
         if (this.#enabled == false) return
         this.#hit.play()
+    }
+
+    playSelect() {
+        if (this.#enabled == false) return
+        this.#select.play()
+    }
+
+    playJump() {
+        if (this.#enabled == false) return
+        this.#jump.play()
+    }
+
+    playStack() {
+        if (this.#enabled == false) return
+        this.#stack.play()
     }
 }
 

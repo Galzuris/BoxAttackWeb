@@ -3,6 +3,7 @@ import { GRID, GRID2, game } from "../game";
 import { graphics, fontSize, T_CENTER, T_LEFT } from "../utils/graphics";
 import { KEY_ENTER, KEY_SPACE, keys } from "../utils/keys";
 import { lerp } from "../utils/math";
+import { sounds } from "../utils/sounds";
 import { InitState } from "./init";
 
 const TIME = 4
@@ -11,6 +12,7 @@ export class GameEndState {
     #timer = 0
     #pos
     #offset = 0
+    #sPlayed = false
 
     constructor(x, y) {
         this.#pos = {
@@ -26,6 +28,18 @@ export class GameEndState {
         setTimeout(() => {
             game.music.play()
         }, 500)
+
+        keys.sub((c, s) => {
+            if (s == false) return
+
+            switch (c) {
+                case KEY_SPACE:
+                case KEY_ENTER:
+                    game.gsm.change(new InitState())
+                    sounds.playSelect()
+                    break
+            }            
+        })
     }
 
     draw() {
@@ -44,6 +58,10 @@ export class GameEndState {
                 rad - 4
             )
             if (k > 0.7) {
+                if (this.#sPlayed == false) {
+                    //sounds.playJump()
+                    this.#sPlayed = true
+                }
                 graphics.clear()
                 const ww = game.grid.cols
                 const hh = game.grid.rows + 2
@@ -74,11 +92,9 @@ export class GameEndState {
 
         this.#offset += d * GRID
         if (this.#offset > GRID2) this.#offset -= GRID2
-
-        if (keys.isPressed(KEY_SPACE) || keys.isPressed(KEY_ENTER)) {
-            game.gsm.change(new InitState())
-        }
     }
 
-    exit() { }
+    exit() {
+        keys.clearSubs()
+    }
 }

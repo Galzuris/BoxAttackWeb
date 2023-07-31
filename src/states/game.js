@@ -1,7 +1,7 @@
 import { graphics } from "../utils/graphics"
-import { game, GRID } from "../game"
-import { KEY_ESC, keys } from "../utils/keys"
-import { GameEndState } from "./gameEnd"
+import { game } from "../game"
+import { KEY_ESC, KEY_M, keys } from "../utils/keys"
+import { PauseState } from "./pause"
 
 export class GameState {
     #box = 0
@@ -9,6 +9,10 @@ export class GameState {
 
     enter() {
         console.log("game")
+        keys.sub((c, s) => {
+            if (s == false) return
+            this.#onKeyDown(c)
+        })
     }
 
     draw() {
@@ -24,11 +28,22 @@ export class GameState {
         this.#box = Math.sin(this.#timer) * 64
         game.scene.update(delta)
         game.grid.update(delta)
-
-        if (keys.isPressed(KEY_ESC)) {
-            game.gsm.change(new GameEndState(0, 0))
-        }
     }
 
-    exit() { }
+    exit() {
+        keys.clearSubs()
+    }
+
+    #onKeyDown(c) {
+        switch (c) {
+            case KEY_ESC:
+                //game.gsm.change(new GameEndState(0, 0))
+                game.gsm.change(new PauseState(this))
+                break
+            case KEY_M:
+                //sounds.toggle()
+                //console.log('toggle music')
+                break
+        }
+    }
 }
