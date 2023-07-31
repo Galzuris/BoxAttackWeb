@@ -2,7 +2,7 @@ import { game, GRID, GRID2 } from "../game"
 import { keys } from "../utils/keys"
 import { KEY_A, KEY_D, KEY_LEFT, KEY_RIGHT, KEY_SPACE, KEY_ENTER } from "../utils/keys"
 import { MODE_P1, MODE_P2 } from "../game"
-import { graphics } from "../utils/graphics"
+import { graphics, T_LEFT, T_RIGHT } from "../utils/graphics"
 import { GameStartState } from "./gameStart"
 import { menuMusic } from "../classes/music"
 
@@ -53,6 +53,10 @@ export class InitState {
         const tx = Math.floor((graphics.canvas.width - graphics.title.width) / 2)
         const ty = Math.floor((graphics.canvas.height - graphics.title.height) / 2)
         graphics.context.drawImage(graphics.title, tx, ty)
+        
+        const bottom = graphics.canvas.height - 16
+        graphics.drawText("galzuris.com", 24, bottom, T_LEFT)
+        graphics.drawText("igdc#184", graphics.canvas.width - 24, bottom, T_RIGHT)
     }
 
     onkey(code, state) {

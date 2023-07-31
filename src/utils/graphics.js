@@ -8,26 +8,35 @@ const titleSprite = "dist/images/title.png"
 const playersSprite = "dist/images/players.png"
 const craneSprite = "dist/images/crane.png"
 const fxSprite = "dist/images/fx.png"
+const fontSprite = "dist/images/font.png"
+const fontSize = { w: 5, h: 6 }
 
 export const numSize = { w: 4, h: 8 }
 export const playerSize = { w: 12, h: 16 }
+export const T_LEFT = 0
+export const T_RIGHT = 1
+export const T_CENTER = 2
 
 class Graphics {
     #blocks
     #nums
     #players
     #crane
+    #font
     #fx
 
     init() {
         this.canvas = document.getElementById(canvasId)
         this.context = this.canvas.getContext("2d")
+        this.context.imageSmoothingEnabled = false
+        this.context.imageSmoothingQuality = "high"
         this.context.lineWidth = 2
 
         this.#blocks = this.loadImage(blocksSprite)
         this.#nums = this.loadImage(numsSprite)
         this.#players = this.loadImage(playersSprite)
         this.#crane = this.loadImage(craneSprite)
+        this.#font = this.loadImage(fontSprite)
         this.#fx = this.loadImage(fxSprite)
         this.title = this.loadImage(titleSprite)
     }
@@ -50,6 +59,41 @@ class Graphics {
     setColor(h) {
         this.context.fillStyle = h
         this.context.strokeStyle = h
+    }
+
+    drawText(text, x, y, mode) {
+        text = text.toUpperCase()
+        const len = text.length
+        let offset = x
+        let size = 0
+        // size
+        let count = 0
+        for (let i = 0; i < len; i++) {
+            const code = text.charCodeAt(i)
+            if (code >= 32 && code <= 95) {
+                count++
+            }
+        }
+        size = Math.floor(count * (fontSize.w + 1))
+
+        if (mode === T_RIGHT) {
+            offset = x - size
+        } else if (mode == T_CENTER) {
+            offset = Math.floor(x - size / 2)
+        }
+
+        for (let i = 0; i < len; i++) {
+            const code = text.charCodeAt(i)
+            if (code >= 32 && code <= 95) {
+                const of = (code - 32) * fontSize.w
+                this.context.drawImage(
+                    this.#font,
+                    of, 0, fontSize.w, fontSize.h,
+                    offset, y, fontSize.w, fontSize.h
+                )
+                offset += fontSize.w + 1
+            }
+        }
     }
 
     drawLine(x1, y1, x2, y2) {
