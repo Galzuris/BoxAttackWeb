@@ -2,6 +2,7 @@ import { graphics } from "../utils/graphics"
 import { game } from "../game"
 import { KEY_ESC, KEY_M, keys } from "../utils/keys"
 import { PauseState } from "./pause"
+import { osc } from "../utils/osc"
 
 export class GameState {
     #box = 0
@@ -41,6 +42,7 @@ export class GameState {
                 game.gsm.change(new PauseState(this))
                 break
             case KEY_M:
+                osc.signal()
                 //sounds.toggle()
                 //console.log('toggle music')
                 break

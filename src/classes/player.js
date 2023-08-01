@@ -129,7 +129,7 @@ export class Player {
 
         if (this.grnd && keys.isPressed(this.#controls.up)) {
             s.y = -JUMP_SPEED
-            sounds.playJump()
+            sounds.playJump(this.#index)
         }
 
         s.y += GRAVITY * d

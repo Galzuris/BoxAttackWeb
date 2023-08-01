@@ -6,6 +6,7 @@ import { graphics, T_LEFT, T_RIGHT } from "../utils/graphics"
 import { GameStartState } from "./gameStart"
 import { menuMusic } from "../classes/music"
 import { sounds } from "../utils/sounds"
+import { osc } from "../utils/osc"
 
 export class InitState {
     #offset = 0
@@ -16,6 +17,7 @@ export class InitState {
 
         console.log("init")
         keys.sub((c, s) => {
+            osc.init()
             sounds.enable()
             if (game.music.isPlaying() == false) {
                 game.music.play()

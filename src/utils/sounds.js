@@ -1,9 +1,10 @@
-const hitSource = 'dist/sounds/hit.wav'
+import { P1ID, P2ID } from "../game"
+import { SIG_SW, SIG_SN, osc, SIG_SQ } from "./osc"
+
 const kickSource = 'dist/sounds/m_kick.wav'
 const hatSource = 'dist/sounds/m_hat.wav'
 const snareSource = 'dist/sounds/m_snare.wav'
 const selectSource = 'dist/sounds/select.wav'
-const jumpSource = 'dist/sounds/jump.wav'
 const stackSource = 'dist/sounds/stack.wav'
 
 // drums
@@ -15,39 +16,28 @@ const F = 'f'
 const G = 'g'
 const Ab = 'ab'
 
-const notesPack = [F, G, Ab]
 const musicVol = 0.3
 
 class Sounds {
     #musicVol = 0.3
     #enabled = false
-    #hit
     #hat
     #kick
     #select
     #stack
-    #jump
     #snare
-    #notes = []
+    #limits = []
 
     constructor() {
-        this.#hit = new Audio(hitSource)
         this.#select = new Audio(selectSource)
-        this.#jump = new Audio(jumpSource)
         this.#stack = new Audio(stackSource)
 
         this.#kick = new Audio(kickSource)
         this.#hat = new Audio(hatSource)
-        this.#snare = new Audio(snareSource)        
+        this.#snare = new Audio(snareSource)
         this.#kick.volume = this.#musicVol
         this.#hat.volume = this.#musicVol
         this.#snare.volume = this.#musicVol
-
-        // load notes
-        notesPack.forEach(n => {
-            this.#notes[n] = new Audio('dist/sounds/m_beep_' + n + '.wav')
-            this.#notes[n].volume = this.#musicVol
-        });
     }
 
     enable() {
@@ -68,12 +58,6 @@ class Sounds {
         }
     }
 
-    playBeep(id) {
-        if (id !== 0) {
-            this.#notes[id].play()
-        }
-    }
-
     disable() {
         this.#enabled = false
     }
@@ -85,15 +69,15 @@ class Sounds {
         this.#kick.volume = vol
         this.#hat.volume = vol
         this.#snare.volume = vol
-        // dont work
-        this.#notes.forEach((v, id) => {
-            this.#notes[id].volume = vol
-        })
     }
 
     playHit() {
         if (this.#enabled == false) return
-        this.#hit.play()
+        if (this.#isLimit('hit', 100)) return
+        const rnd = Math.random() * 10
+        osc.signal(50 + rnd, 50, 0.1, SIG_SQ)
+        const v2 = 10 + Math.random() * 20
+        osc.signal(v2, v2, 0.05, SIG_SN)
     }
 
     playSelect() {
@@ -101,14 +85,38 @@ class Sounds {
         this.#select.play()
     }
 
-    playJump() {
+    playJump(id) {
         if (this.#enabled == false) return
-        this.#jump.play()
+        if (this.#isLimit('jump', 100)) return
+        if (id == undefined) {
+            osc.signal(700, 1000, 0.15, SIG_SW)
+        } else {
+            switch (id) {
+                case P1ID:
+                    osc.signal(650, 900, 0.15, SIG_SW)
+                    break
+                case P2ID:
+                    osc.signal(600, 850, 0.15, SIG_SW)
+                    break
+            }
+        }
     }
 
     playStack() {
         if (this.#enabled == false) return
         this.#stack.play()
+    }
+
+    #isLimit(name, durMills) {
+        const id = this.#limits.indexOf(name)
+        if (id >= 0) return true
+
+        this.#limits.push(name)
+        setTimeout(() => {
+            this.#limits.splice(id, 1)
+        }, durMills)
+
+        return false
     }
 }
 
