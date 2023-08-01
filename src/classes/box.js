@@ -5,8 +5,8 @@ import { graphics } from "../utils/graphics"
 import { lerp, clamp01 } from "../utils/math"
 import { sounds } from "../utils/sounds"
 
-export const BOX_MOVE_TO = 1
-export const BOX_MOVE_DROP = 2
+export const BOX_SLIDE = 1
+export const BOX_DROP = 2
 
 export class Box {
     id = 1
@@ -14,7 +14,7 @@ export class Box {
     startPos = { x: 0, y: 0 }
 
     drop() {
-        this.mode = BOX_MOVE_DROP
+        this.mode = BOX_DROP
     }
 
     moveTo(x, y) {
@@ -22,7 +22,7 @@ export class Box {
             x: this.pos.x,
             y: this.pos.y,
         }
-        this.mode = BOX_MOVE_TO
+        this.mode = BOX_SLIDE
         this.target = {
             x: x,
             y: y,
@@ -39,10 +39,10 @@ export class Box {
 
     update(delta) {
         switch (this.mode) {
-            case BOX_MOVE_TO:
+            case BOX_SLIDE:
                 this.#processMoveTo(delta)
                 break
-            case BOX_MOVE_DROP:
+            case BOX_DROP:
                 this.#processMoveDrop(delta)
                 break
         }
@@ -84,7 +84,7 @@ export class Box {
             this.pos.y = c.down - GRID            
             this.materialize()
             this.mode = -1
-        }
+        }        
     }
 
     materialize() {
@@ -92,7 +92,7 @@ export class Box {
         game.grid.set(p.x, p.y, this.id)
         game.scene.remove(this)
 
-        if (this.mode == BOX_MOVE_DROP) { //&& game.grid.isCollide(p.x, p.y + 1)
+        if (this.mode == BOX_DROP) { //&& game.grid.isCollide(p.x, p.y + 1)
             sounds.playHit()
         }
 

@@ -2,6 +2,7 @@ import { graphics } from "../utils/graphics"
 import { ROW_SCORE, game, GRID, GRIDH } from "../game"
 import { Box } from "./box"
 import { sounds } from "../utils/sounds"
+import { collide } from "../utils/collision"
 
 export class Grid {
     #fillTimer = 0
@@ -44,12 +45,25 @@ export class Grid {
             return false
         }
 
+        const sc = game.scene.getCollider(x, y)
+        // if (dir < 0) {
+        //     return this.pos.x - c.left >= GRID
+        // } else {
+        //     return c.right - GRID - this.pos.x >= GRID
+        // }
+
         if (mx < 0) { // push left            
             if (c.x == 0) return false
             if (this.data[c.x - 1][c.y] != 0) return false
+            if (x - sc.left < GRID) return false
         } else {
             if (c.x == this.cols - 1) return false
             if (this.data[c.x + 1][c.y] != 0) return false
+            if (c.right - GRID - y < GRID) return false
+        }
+
+        if (c.y > 0) {
+            if (this.data[c.x][c.y - 1] != 0) return false
         }
 
         return true
@@ -192,11 +206,22 @@ export class Grid {
     getCollider(x, y) {
         const c = this.toGrid(x, y)
         return {
-            up: 0,
+            up: this.#scanUp(c.x, c.y),
             left: this.#scanLeft(c.x, c.y),
             right: this.#scanRight(c.x, c.y),
             down: this.#scanDown(c.x, c.y)
         }
+    }
+
+    #scanUp(x, y) {
+        if (this.#isSafe(x, y)) {
+            for (let i = y; i > 0; i--) {
+                if (this.data[x][i] > 0) {
+                    return i * GRID + GRID
+                }
+            }
+        }
+        return 0
     }
 
     #scanDown(x, y) {

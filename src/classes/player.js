@@ -3,8 +3,9 @@ import { graphics, playerSize } from "../utils/graphics"
 import { keys } from "../utils/keys"
 import { game } from "../game"
 import { collide } from "../utils/collision"
-import { BOX_MOVE_DROP, Box } from "./box"
+import { BOX_DROP, Box } from "./box"
 import { sounds } from "../utils/sounds"
+import { GameEndState } from "../states/gameEnd"
 
 export class Player {
     #index
@@ -15,6 +16,7 @@ export class Player {
     #walk = false
     #pushTimer
     pos = { x: 32, y: 32 }
+    grnd = false
     #collider = null
     #aabb = null
 
@@ -46,6 +48,8 @@ export class Player {
             graphics.drawLine(c.right, this.pos.y - playerSize.h, c.right, this.pos.y)
             graphics.setColor('#FF00FF')
             graphics.drawLine(this.pos.x - playerSize.w / 2, c.down, this.pos.x + playerSize.w / 2, c.down)
+            graphics.setColor('#00FFFF')
+            graphics.drawLine(this.pos.x - playerSize.w / 2, c.up, this.pos.x + playerSize.w / 2, c.up)
 
             const ab = this.#aabb
             graphics.setColor('#0000FF77')
@@ -83,6 +87,23 @@ export class Player {
             this.#walk = false
         }
 
+        // check box-collide on head
+        if (this.grnd) {
+            if (this.pos.y - playerSize.h - 1 <= collider.up) {
+                console.log('die')
+                game.gsm.change(new GameEndState(this.pos.x, this.pos.y - playerSize.h / 2))
+                this.pos.y = -GRID
+                sounds.playHit()            
+                return
+            }
+        }
+        if (s.y < 0) {
+            if (this.pos.y - playerSize.h + s.y * d <= collider.up) {
+                this.pos.y = collider.up + playerSize.h
+                s.y = 0
+            }
+        }
+
         if (s.x > 0) {
             if (this.pos.x + s.x * d + pw > collider.right) {
                 this.pos.x = collider.right - pw
@@ -99,14 +120,14 @@ export class Player {
             }
         }
 
-        let grounded = false
+        this.grnd = false
         if (this.pos.y + s.y * d > collider.down) {
             this.pos.y = collider.down
             s.y = 0
-            grounded = true
+            this.grnd = true
         }
 
-        if (grounded && keys.isPressed(this.#controls.up)) {
+        if (this.grnd && keys.isPressed(this.#controls.up)) {
             s.y = -JUMP_SPEED
             sounds.playJump()
         }
@@ -138,7 +159,7 @@ export class Player {
         const boxes = game.scene
             .findByType(Box)
             .filter(b =>
-                b.mode == BOX_MOVE_DROP
+                b.mode == BOX_DROP
                 && x >= b.pos.x && x <= b.pos.x + GRID
                 && y >= b.pos.y && y <= b.pos.y + GRID
                 && b.canPush(dir)

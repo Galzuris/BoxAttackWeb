@@ -7,6 +7,7 @@ import { Scene } from "./utils/scene"
 const frameDelta = 1000 / 60
 const updateDelta = 1000 / 40
 
+export const DEBUG = false
 export const MODE_P1 = 1
 export const MODE_P2 = 2
 export const P1ID = 0
@@ -20,7 +21,6 @@ export const GRAVITY = 256
 export const JUMP_SPEED = 120
 export const PUSH_DELTA = 0.2
 export const BOX_DROP_SPEED = 32
-export const DEBUG = false
 export const BOX_SCORE = 10
 export const BOX_MOVE_TIME = 0.4
 export const ROW_SCORE = 200

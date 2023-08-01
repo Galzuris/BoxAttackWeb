@@ -25,11 +25,22 @@ export class Scene {
     getCollider(x, y, ig) {
         const step = 4
         return {
-            up: 0,
+            up: this.#scanUp(x, y, step, ig),
             left: this.#scanLeft(x, y, step, ig),
             right: this.#scanRight(x, y, step, ig),
             down: this.#scanDown(x, y, step, ig),
         }
+    }
+
+    #scanUp(x, y, step, ig) {
+        for (let yy = y; yy >= 0; yy -= step) {
+            const c = this.#findCollision(x, yy, ig)
+            if (c === null) continue
+            if (c instanceof Box) {
+                return c.pos.y + GRID
+            }
+        }
+        return 0
     }
 
     #scanDown(x, y, step, ig) {
