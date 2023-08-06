@@ -87,16 +87,6 @@ export class Player {
             this.#walk = false
         }
 
-        // check box-collide on head
-        if (this.grnd) {
-            if (this.pos.y - playerSize.h - 1 <= collider.up) {
-                console.log('die')
-                game.gsm.change(new GameEndState(this.pos.x, this.pos.y - playerSize.h / 2))
-                this.pos.y = -GRID
-                sounds.playHit()            
-                return
-            }
-        }
         if (s.y < 0) {
             if (this.pos.y - playerSize.h + s.y * d <= collider.up) {
                 this.pos.y = collider.up + playerSize.h
@@ -117,6 +107,17 @@ export class Player {
                 s.x = 0
                 const px = this.pos.x - GRID
                 this.#push(px, -1, d)
+            }
+        }
+
+        // check box-collide on head
+        if (this.grnd) {
+            if (this.pos.y - playerSize.h - 1 <= collider.up) {
+                console.log('die')
+                game.gsm.change(new GameEndState(this.pos.x, this.pos.y - playerSize.h / 2))
+                this.pos.y = -GRID
+                sounds.playHit()            
+                return
             }
         }
 

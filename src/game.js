@@ -4,8 +4,8 @@ import { StateMachine } from "./states/machine"
 import { KEY_A, KEY_D, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_W } from "./utils/keys"
 import { Scene } from "./utils/scene"
 
-const frameDelta = 1000 / 60
-const updateDelta = 1000 / 40
+const frameDelta = 1000 / 40
+// const updateDelta = 1000 / 40
 
 export const DEBUG = false
 export const MODE_P1 = 1
@@ -46,8 +46,7 @@ class Game {
         this.prevDateTime = this.dateTime
         this.deltaTime = 0
 
-        setInterval(() => { this.draw() }, frameDelta)
-        setInterval(() => { this.update() }, updateDelta)
+        setInterval(() => { this.draw(); this.update(); }, frameDelta)
     }
 
     draw() {
@@ -67,7 +66,7 @@ class Game {
         }
 
         this.prevDateTime = this.dateTime
-        this.craneSpeed = GRID * 4 + this.score/1000
+        this.craneSpeed = GRID * 4 + this.score / 1000
     }
 }
 
