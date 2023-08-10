@@ -215,7 +215,7 @@ export class Grid {
 
     #scanUp(x, y) {
         if (this.#isSafe(x, y)) {
-            for (let i = y; i > 0; i--) {
+            for (let i = y; i >= 0; i--) {
                 if (this.data[x][i] > 0) {
                     return i * GRID + GRID
                 }
@@ -237,7 +237,7 @@ export class Grid {
 
     #scanLeft(x, y) {
         if (this.#isSafe(x, y)) {
-            for (let i = x; i > 0; i--) {
+            for (let i = x; i >= 0; i--) {
                 if (this.data[i][y] > 0) {
                     return i * GRID + GRID
                 }

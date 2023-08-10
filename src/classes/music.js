@@ -1,3 +1,4 @@
+import { SIG_SN, SIG_SW, SIG_TR, osc } from "../utils/osc"
 import { sounds } from "../utils/sounds"
 
 // drums
@@ -5,9 +6,12 @@ const K = 'k'
 const H = 'h'
 const S = 's'
 // beeps
-const F = 'f'
-const G = 'g'
-const Ab = 'ab'
+// const F = 'f'
+// const G = 'g'
+// const Ab = 'ab'
+const F = 349.23
+const G = 392.00	
+const Ab = 415.30
 
 export class Music {
     bpm = 120
@@ -49,7 +53,11 @@ export class Music {
         this.#loop = setInterval(() => {
             const beepId = this.#beeps[this.#beepK]
             const drumId = this.#drums[this.#drumK]
-            sounds.playBeep(beepId)
+            if (beepId > 0) {
+                osc.playNote(beepId, 0.25, SIG_SW)
+                osc.playNote(87.31, 0.2, SIG_SN)
+            }
+            //sounds.playBeep(beepId)
             sounds.playDrum(drumId)
 
             this.#drumK++
